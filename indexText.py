@@ -6,34 +6,52 @@ import numpy as np
 
 model = gensim.models.KeyedVectors.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True) #without *norm_only* param
 
-#index
-circle1 = open('/Users/ethanhwang/Documents/hellDante/circle1.txt').read()
+def txtToList(path):
+    file = open(path).read()
+    return file.split()
 
-def convert(x):
-    return (x.split())
+def csvToList(path):
+    my_file = open(path, "r")
+    my_file.close()
+    return print(my_file.read().split("\n"))
 
-circle1List = convert(circle1)
-#print(circle1List)
+def removeNonChar(list):
+    newlist = []
+    for _ in range(0,len(list)):
+        newlist.append(''.join(filter(str.isalpha, list)))
+    return newlist
 
-uq1 = []
+def lowerCase(list):
+    newlist = []
+    for _ in range(0,len(list)):
+        newlist.append(list[_].lower())
+    return newlist
+
+def removeDup(list):
+    uq = []
+    for _ in list:
+        if _ in uq :
+            pass
+            # print(f"duplicate: {_}!")
+        else:
+            # print(f"new element: {_}!")
+            uq.append(_)
+    return uq
+
+#convert text to list
+circle1List = txtToList('/Users/ethanhwang/Documents/hellDante/circle1.txt')
 
 #remove duplicates and save to uq1
-for _ in circle1List:
-    if _ in uq1 :
-        print(f"duplicate: {_}!")
-    else:
-        print(f"new element: {_}!")
-        uq1.append(_)
+uq1 = removeDup(circle1List)
 
 #make uq1 lowercase
-for _ in range(0,len(uq1)):
-    uq1[_] = uq1[_].lower()
+uq1 = lowerCase(uq1)
 
 similarity1 = []
 
 print("""confess now!""")
 confession = input()
-confessionList = convert(confession)
+confessionList = confession.split()
 for j in range(0,len(uq1)):
     similarity1.append([])
     for i in range(0,len(confessionList)):
