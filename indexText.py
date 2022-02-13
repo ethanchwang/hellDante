@@ -31,19 +31,26 @@ for _ in range(0,len(uq1)):
 
 similarity1 = []
 
-#check similarity with entered string
 print("""confess now!""")
 confession = input()
-for _ in range(0,len(uq1)):
-    try:
-        similarity1.append(model.similarity(confession, uq1[_]))
-    except:
-        similarity1.append(0)
+confessionList = convert(confession)
+for j in range(0,len(uq1)):
+    similarity1.append([])
+    for i in range(0,len(confessionList)):
+        similarity1[j].append(0)
+        try:
+            similarity1[j][i] = model.similarity(confessionList[i], uq1[j])
+        except:
+            pass
 
 print(similarity1)
 print(len(similarity1))
 
-closestWord1 = np.amax(similarity1)
-index = similarity1.index(closestWord1)
+closestSimilarity1 = np.argmax(similarity1, axis=0)
+print(closestSimilarity1)
+print(closestSimilarity1[0])
+print(closestSimilarity1[1])
+print(closestSimilarity1[2])
 
-print(f"your word: {confession}, closest word: {uq1[index]}, how close: {similarity1[index]}")
+for _ in range(0,len(confessionList)):
+    print(f"your word: {confessionList[_]}, closest word: {uq1[closestSimilarity1[_]]}, how close: {similarity1[closestSimilarity1[_]][_]}")
