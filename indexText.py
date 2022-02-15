@@ -1,24 +1,22 @@
-#initialize gensim stuff
-import gensim
-from gensim import models
-from gensim.models import Word2Vec
-import numpy as np
-
-model = gensim.models.KeyedVectors.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True) #without *norm_only* param
+import csv
 
 def txtToList(path):
     file = open(path).read()
     return file.split()
 
-def csvToList(path):
-    my_file = open(path, "r")
-    my_file.close()
-    return print(my_file.read().split("\n"))
+def listToCSV(list, path):
+    nestedList = []
+    for _ in range(0,len(list)):
+        nestedList.append([])
+        nestedList[_].append(list[_].lower())
+    with open(path, 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerows(nestedList)
 
 def removeNonChar(list):
     newlist = []
     for _ in range(0,len(list)):
-        newlist.append(''.join(filter(str.isalpha, list)))
+        newlist.append(''.join(filter(str.isalpha, list[_])))
     return newlist
 
 def lowerCase(list):
@@ -47,28 +45,7 @@ uq1 = removeDup(circle1List)
 #make uq1 lowercase
 uq1 = lowerCase(uq1)
 
-similarity1 = []
+#remove all noncharacters
+uq1 = removeNonChar(uq1)
 
-print("""confess now!""")
-confession = input()
-confessionList = confession.split()
-for j in range(0,len(uq1)):
-    similarity1.append([])
-    for i in range(0,len(confessionList)):
-        similarity1[j].append(0)
-        try:
-            similarity1[j][i] = model.similarity(confessionList[i], uq1[j])
-        except:
-            pass
-
-print(similarity1)
-print(len(similarity1))
-
-closestSimilarity1 = np.argmax(similarity1, axis=0)
-print(closestSimilarity1)
-print(closestSimilarity1[0])
-print(closestSimilarity1[1])
-print(closestSimilarity1[2])
-
-for _ in range(0,len(confessionList)):
-    print(f"your word: {confessionList[_]}, closest word: {uq1[closestSimilarity1[_]]}, how close: {similarity1[closestSimilarity1[_]][_]}")
+listToCSV(uq1,'/Users/ethanhwang/Documents/hellDante/uq1.csv')
