@@ -1,5 +1,15 @@
 import csv
 
+directory = '/Users/ethanhwang/Documents/hellDante/'
+nWordsRemove = 300
+c1 = 'circle1'
+
+def csvToList(path):
+    my_file = open(path, "r")
+    newList = my_file.read().split("\n")
+    my_file.close()
+    return newList
+
 def txtToList(path):
     file = open(path).read()
     return file.split()
@@ -8,7 +18,8 @@ def listToCSV(list, path):
     nestedList = []
     for _ in range(0,len(list)):
         nestedList.append([])
-        nestedList[_].append(list[_].lower())
+        nestedList[_].append(list[_][0].lower())
+        nestedList[_].append(list[_][1])
     with open(path, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerows(nestedList)
@@ -26,26 +37,30 @@ def lowerCase(list):
     return newlist
 
 def removeDup(list):
-    uq = []
+    uq = {}
     for _ in list:
-        if _ in uq :
+        if _ in uq:
+            f = uq.get(_)
+            uq.update({_ : (f+1)})
             pass
-            # print(f"duplicate: {_}!")
         else:
-            # print(f"new element: {_}!")
-            uq.append(_)
+            uq[_] = 1
     return uq
 
-#convert text to list
-circle1List = txtToList('/Users/ethanhwang/Documents/hellDante/circle1.txt')
+def removeCommonWords(uq, n):
+    commonWords = csvToList('/Users/ethanhwang/Documents/hellDante/commonWords2.csv')
+    print(f'length before removing common words: {len(uq)}!')
+    for _ in range(0,min(n,1000)):
+        try:
+            uq.pop(commonWords[_].lower())
+        except:
+            pass
+            print(f'{commonWords[_]} not found!')
+    print(f'length after removing common words: {len(uq)}!')
+    print(list(uq.items()))
+    return list(uq.items())
 
-#remove duplicates and save to uq1
-uq1 = removeDup(circle1List)
+def txtToUQ(c):
+    listToCSV(removeCommonWords(removeDup(removeNonChar(lowerCase(txtToList(f'{directory}{c}.txt')))),nWordsRemove),f'{directory}UQ{c}.csv')
 
-#make uq1 lowercase
-uq1 = lowerCase(uq1)
-
-#remove all noncharacters
-uq1 = removeNonChar(uq1)
-
-listToCSV(uq1,'/Users/ethanhwang/Documents/hellDante/uq1.csv')
+txtToUQ(c1)
