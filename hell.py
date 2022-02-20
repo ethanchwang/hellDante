@@ -24,10 +24,10 @@ def getSimilarity(confession, comparison):
                 pass
     return similarity
 
-def sim(listOfList):
+def sim(cList, listOfList):
     output = []
     for _ in listOfList:
-        output.append(getSimilarity(confessionList, _))
+        output.append(getSimilarity(cList, _))
     return output
 
 def finalScore(listOfList):
@@ -63,11 +63,12 @@ uq9 = csvToList(f'{directory}UQCircle9.csv')
 
 circles = [uq1, uq2, uq3, uq4, uq5, uq6, uq7, uq8, uq9]
 
-while "matthew":
-    print("""confess now!""")
-    confession = input()
-    confessionList = confession.split()
+if __name__ == '__main__':
+    while "matthew":
+        print("""confess now!""")
+        confession = input()
+        confessionList = confession.split()
 
-    c = finalScore(sim(circles))
+        c = finalScore(sim(circles))
 
-    print(f"You have been banished to circle {c} of hell!")
+        print(f"You have been banished to circle {c} of hell!")
