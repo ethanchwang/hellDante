@@ -19,6 +19,9 @@ from gensim.models import Word2Vec
 import timeit
 
 model = gensim.models.KeyedVectors.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True)
+
+def sim(a, b):
+    model.similarity(a, b)
 '''
 mycode = '''
 model.similarity('woman', 'man')
@@ -27,4 +30,4 @@ model.similarity('woman', 'man')
 # timeit statement
 print (timeit.timeit(setup = mysetup,
                     stmt = mycode,
-                    number = 10000)) 
+                    number = 10000))

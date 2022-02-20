@@ -1,8 +1,18 @@
 import csv
 
-directory = '/Users/ethanhwang/Documents/hellDante/'
+directory = '/Users/ethanhwang/Documents/hellDante/textWiki/'
 nWordsRemove = 300
 c1 = 'circle1'
+c2 = 'circle2'
+c3 = 'circle3'
+c4 = 'circle4'
+c5 = 'circle5'
+c6 = 'circle6'
+c7 = 'circle7'
+c8 = 'circle8'
+c9 = 'circle9'
+
+text = [c1, c2, c3, c4, c5, c6, c7, c8, c9]
 
 def csvToList(path):
     my_file = open(path, "r")
@@ -63,4 +73,9 @@ def removeCommonWords(uq, n):
 def txtToUQ(c):
     listToCSV(removeCommonWords(removeDup(removeNonChar(lowerCase(txtToList(f'{directory}{c}.txt')))),nWordsRemove),f'{directory}UQ{c}.csv')
 
-txtToUQ(c1)
+def indexList(listOfLists):
+    output = []
+    for _ in listOfLists:
+        output.append(txtToUQ(_))
+
+indexList(text)

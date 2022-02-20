@@ -22,23 +22,52 @@ def getSimilarity(confession, comparison):
                 similarity[j][i] = (model.similarity(confession[i], comparison[j][0]))*pow(comparison[j][1],.5)
             except:
                 pass
-    print(comparison)
-    print(similarity)
     return similarity
+
+def sim(listOfList):
+    output = []
+    for _ in listOfList:
+        output.append(getSimilarity(confessionList, _))
+    return output
+
+def finalScore(listOfList):
+    finalScore = []
+    closestSimilarityIndex = []
+    closestSimilarityNum = []
+    for _ in listOfList:
+        # closestSimilarity.append([])
+        maxIndex = np.argmax(_, axis=0)
+        closestSimilarityIndex.append(maxIndex)
+        maxNums = np.amax(_, axis=0)
+        closestSimilarityNum.append(maxNums)
+    for _ in closestSimilarityNum:
+        finalScore.append(sum(_))
+    # print(f'closestSimilarity: {closestSimilarityIndex}')
+    print(f'closestSimilarity: {closestSimilarityNum}')
+    print(f'finalScore: {finalScore}')
+    return (np.argmax(finalScore)+1)
 
 model = gensim.models.KeyedVectors.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True) #without *norm_only* param
 
-uq1 = csvToList('/Users/ethanhwang/Documents/hellDante/UQcircle1.csv')
+directory = '/Users/ethanhwang/Documents/hellDante/textWiki/'
 
-similarity1 = []
+uq1 = csvToList(f'{directory}UQCircle1.csv')
+uq2 = csvToList(f'{directory}UQCircle2.csv')
+uq3 = csvToList(f'{directory}UQCircle3.csv')
+uq4 = csvToList(f'{directory}UQCircle4.csv')
+uq5 = csvToList(f'{directory}UQCircle5.csv')
+uq6 = csvToList(f'{directory}UQCircle6.csv')
+uq7 = csvToList(f'{directory}UQCircle7.csv')
+uq8 = csvToList(f'{directory}UQCircle8.csv')
+uq9 = csvToList(f'{directory}UQCircle9.csv')
 
-print("""confess now!""")
-confession = input()
-confessionList = confession.split()
-similarity1 = getSimilarity(confessionList, uq1)
+circles = [uq1, uq2, uq3, uq4, uq5, uq6, uq7, uq8, uq9]
 
-closestSimilarity1 = np.argmax(similarity1, axis=0)
-print(closestSimilarity1)
+while "matthew":
+    print("""confess now!""")
+    confession = input()
+    confessionList = confession.split()
 
-for _ in range(0,len(confessionList)):
-    print(f"your word: {confessionList[_]}, closest word: {uq1[closestSimilarity1[_]]}, how close: {similarity1[closestSimilarity1[_]][_]}")
+    c = finalScore(sim(circles))
+
+    print(f"You have been banished to circle {c} of hell!")
